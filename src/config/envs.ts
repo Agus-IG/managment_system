@@ -14,7 +14,7 @@ interface EnvVars {
 // Validar las variables de entorno
 const envsSchema = joi
   .object<EnvVars>({
-    PORT: joi.number().default(3000),
+    PORT: joi.number().default(3010),
     JWT_SECRET: joi.string().required(),
     DB_HOST: joi.string().required(),
     DB_USER: joi.string().required(),
