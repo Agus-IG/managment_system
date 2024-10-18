@@ -7,12 +7,10 @@ export class EntradaSalida {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Usuario)
-  @JoinColumn({ name: 'usuarioId' })
+  @ManyToOne(() => Usuario, (usuario) => usuario.ingresos)
   usuario: Usuario;
 
   @ManyToOne(() => Parcela, (parcela) => parcela.ingresos)
-  @JoinColumn({ name: 'parcelaId' })
   parcela: Parcela;
 
   @Column('timestamp')

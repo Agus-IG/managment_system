@@ -1,4 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Reservacion } from '../reservaciones/reservaciones.entity';
+import { EntradaSalida } from '../entrada-salida/entrada-salida.entity';
 
 export enum Role {
   ADMIN = 'admin',
@@ -33,4 +36,7 @@ export class Usuario {
 
   @UpdateDateColumn()
   updatedAt?: Date;
+
+  @OneToMany(() => EntradaSalida, (ingreso) => ingreso.usuario)
+  ingresos: EntradaSalida[];
 }

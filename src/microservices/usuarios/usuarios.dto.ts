@@ -9,6 +9,7 @@ import {
     MinLength,
   } from 'class-validator';
   import { Role } from './usuarios.entity';
+import { EntradaSalida } from '../entrada-salida/entrada-salida.entity';
 
 export class UsuarioDto {
     id: number;
@@ -42,4 +43,6 @@ export class UsuarioDto {
   @IsOptional()
   @IsDate()
   updatedAt?: Date;
+
+  ingresos: EntradaSalida[];
 }

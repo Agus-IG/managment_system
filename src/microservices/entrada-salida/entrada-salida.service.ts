@@ -14,8 +14,18 @@ export class EntradaSalidaService {
 
   // Crear una nueva entrada
   async create(CrearIngresoDto: CrearIngresoDto): Promise<EntradaSalida> {
-    const nuevoIngreso = this.ingresoRepository.create(CrearIngresoDto);
-    return await this.ingresoRepository.save(nuevoIngreso);
+    const nuevoIngreso = this.ingresoRepository.create({
+      ...CrearIngresoDto,
+      horaEntrada: new Date(),
+    });
+    return this.ingresoRepository.save(nuevoIngreso);
+  }
+
+  // Obtener todos los ingresos
+  async obtenerIngresos(): Promise<EntradaSalida[]> {
+    return await this.ingresoRepository.find({
+      relations: ['parcela', 'usuario'],
+    });
   }
 
   // Actualizar una entrada
@@ -30,7 +40,17 @@ export class EntradaSalidaService {
       throw new NotFoundException(`Ingreso con id ${id} no encontrada`);
     }
 
-    Object.assign(ingreso, actualizarIngresoDto); // Actualizar la entrada con los datos del DTO
+    ingreso.horaSalida = new Date(); // Actualizar la hora de salida
     return await this.ingresoRepository.save(ingreso); // Guardar la entrada actualizada en la base de datos
+  }
+
+  // Eliminar un ingreso a la parcela
+  async delete(id: number): Promise<void> {
+    const result = await this.ingresoRepository.delete(id); // Eliminar la entrada por su ID
+
+    // Verificar si la entrada existe
+    if (result.affected === 0) {
+      throw new NotFoundException(`Ingreso con id ${id} no encontrada`);
+    }
   }
 }

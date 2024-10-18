@@ -8,10 +8,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from 'src/auth/auth.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { saveImageStorage } from 'src/helpers/image-storage';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from 'src/auth/middlewares/jwt/jwt.strategy';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(db),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     TypeOrmModule.forFeature([Usuario]),
     JwtModule.register({
       secret: envs.jwt,
@@ -26,7 +29,7 @@ import { saveImageStorage } from 'src/helpers/image-storage';
   }),
   ],
   controllers: [UsuariosController],
-  providers: [UsuariosService, AuthService],
+  providers: [UsuariosService, AuthService, JwtStrategy],
   exports: [UsuariosService, TypeOrmModule],
 })
 export class UsuariosModule {}

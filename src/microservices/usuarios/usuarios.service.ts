@@ -128,7 +128,7 @@ export class UsuariosService {
         user.avatar = files[0].filename;
       }
       const oldUser = await this.getOne(id);
-      const mergeUser = await this.usuariosRepository.merge(oldUser, user);
+      const mergeUser = await this.usuariosRepository.merge(oldUser, user as Partial<Usuario>);
       const result = await this.usuariosRepository.save(mergeUser);
       return result;
     } catch (err) {
