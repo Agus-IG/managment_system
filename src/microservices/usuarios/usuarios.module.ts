@@ -10,6 +10,8 @@ import { MulterModule } from '@nestjs/platform-express';
 import { saveImageStorage } from 'src/helpers/image-storage';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/middlewares/jwt/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Module({
   imports: [
@@ -29,7 +31,10 @@ import { JwtStrategy } from 'src/auth/middlewares/jwt/jwt.strategy';
   }),
   ],
   controllers: [UsuariosController],
-  providers: [UsuariosService, AuthService, JwtStrategy],
+  providers: [UsuariosService, AuthService, JwtStrategy, {
+    provide: APP_GUARD,
+    useClass: RolesGuard
+  }],
   exports: [UsuariosService, TypeOrmModule],
 })
 export class UsuariosModule {}
